@@ -57,6 +57,35 @@ void Subject::Displaysubject(){
     return;
 }
 
+void Subject::DisplaySubjectSummary(){
+    cout<<"\n**SUBJECT SUMMARY**"<<endl;
+    cout<<"\nSUBJECT NAME - "<<subjectname<<endl;
+    cout<<"NO OF STUDENTS PER THIS SUBJECT - "<<stucountforsub<<endl;
+    //Calculating the average
+    int ptr=1;
+    int totalofallstudents=0;
+    while(ptr<=stucountforsub){
+        totalofallstudents+=studentmarkdatabase[ptr][1];
+        ptr++;
+    }
+    int avg=totalofallstudents/stucountforsub;
+    cout<<"\nSTUDENT MARKS AVERAGE FOR THE SUBJECT "<<subjectname<<" -> "<<avg<<endl;
+
+    //Caluculating the Standard Deviation
+    ptr=1;
+    int temp=0;
+    int squarestore=0;
+    int var=0;
+    while(ptr<=stucountforsub){
+        temp=studentmarkdatabase[ptr][1]-avg;
+        squarestore=temp*temp;
+        var+=squarestore;
+        ptr++;
+    }
+    cout<<"STUDENT MARKS STANDARD DEVIATION FOR THE SUBJECT "<<subjectname<<" -> "<<sqrt(var)<<endl;
+    return;
+}
+
 
 
 
