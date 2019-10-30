@@ -42,83 +42,57 @@ void Subject::set_marks(int position,int index,int score){
 string Subject::get_subname(){return subjectname;}
 Subject subjectarray[MAXSUBJECTS];
 
-void Subject::Displaysubject(){
-    cout<<"SUBJECT NAME - "<<subjectname<<endl;
-    cout<<"NO OF STUDENTS PER THIS SUBJECT - "<<stucountforsub<<endl;
-    int ptr=1;
-    cout<<endl;
-    cout<<"**STUDENT GRADE TABLE**"<<endl;
-    
-    cout<<" INDEX   "<<"|"<<"SCORE"<<"|"<<"GRADE"<<endl;
-    while(ptr<=stucountforsub){
-        cout<<studentmarkdatabase[ptr][0]<<" | "<<studentmarkdatabase[ptr][1]<<" | "<<(char)studentmarkdatabase[ptr][2]<<endl;
-        ptr++;
-    }
-    return;
-}
+void savesummary(){
+    int k=0;
+    while(k<MAXSUBJECTS){
+        int i=0;
+        int noAs=0;
+        int noBs=0;
+        int noCs=0;
+        int noDs=0;
+        int noEs=0;
+        if(subjectarray[k].stucountforsub==0){
+            k++;
+            continue;
+        }
 
-void Subject::DisplaySubjectSummary(){
-    cout<<"\n**SUBJECT SUMMARY**"<<endl;
-    cout<<"\nSUBJECT NAME - "<<subjectname<<endl;
-    cout<<"NO OF STUDENTS PER THIS SUBJECT - "<<stucountforsub<<endl;
-    //Calculating the average
-    int ptr=1;
-    int totalofallstudents=0;
-    while(ptr<=stucountforsub){
-        totalofallstudents+=studentmarkdatabase[ptr][1];
-        ptr++;
-    }
-    int avg=totalofallstudents/stucountforsub;
-    cout<<"\nSTUDENT MARKS AVERAGE FOR THE SUBJECT "<<subjectname<<" -> "<<avg<<endl;
-
-    //Caluculating the Standard Deviation
-    ptr=1;
-    int temp=0;
-    int squarestore=0;
-    int var=0;
-    while(ptr<=stucountforsub){
-        temp=studentmarkdatabase[ptr][1]-avg;
-        squarestore=temp*temp;
-        var+=squarestore;
-        ptr++;
-    }
-    cout<<"STUDENT MARKS STANDARD DEVIATION FOR THE SUBJECT "<<subjectname<<" -> "<<sqrt(var)<<endl;
-    return;
-}
-
-
-
-
-
-void sortarray(){
-    for(int k=0;k<MAXSUBJECTS;k++){
-        for(int j=1;j<subjectarray[k].stucountforsub;j++){
-        int min=subjectarray[k].studentmarkdatabase[j][0];
-        int temparray[3];
-        int ptr;
-
-        for(int i=j;i<subjectarray[k].stucountforsub;i++){
-            if(min>subjectarray[k].studentmarkdatabase[i][0]){
-                min=subjectarray[k].studentmarkdatabase[i][0];
-                ptr=i;
+        while(i<MAXSTUDENTS){
+            if(subjectarray[k].studentmarkdatabase[i][2]==65){
+                noAs++;
+            }else if(subjectarray[k].studentmarkdatabase[i][2]==66){
+                noBs++;
+            }else if(subjectarray[k].studentmarkdatabase[i][2]==67){
+                noCs++;
+            }else if(subjectarray[k].studentmarkdatabase[i][2]==68){
+                noDs++;
+            }else if(subjectarray[k].studentmarkdatabase[i][2]==69){
+                noEs++;
             }
+        
+        i++;
         }
-        if(min!=subjectarray[k].studentmarkdatabase[j][0]){
-            temparray[0]=subjectarray[k].studentmarkdatabase[j][0];
-            temparray[1]=subjectarray[k].studentmarkdatabase[j][1];
-            temparray[2]=subjectarray[k].studentmarkdatabase[j][2];
+        float count=(float)subjectarray[k].stucountforsub;
+        float percA=((float)noAs/count)*100;
+        float percB=((float)noBs/count)*100;
+        float percC=((float)noCs/count)*100;
+        float percD=((float)noDs/count)*100;
+        float percE=((float)noEs/count)*100;
 
-            subjectarray[k].studentmarkdatabase[j][0]=subjectarray[k].studentmarkdatabase[ptr][0];
-            subjectarray[k].studentmarkdatabase[j][1]=subjectarray[k].studentmarkdatabase[ptr][1];
-            subjectarray[k].studentmarkdatabase[j][2]=subjectarray[k].studentmarkdatabase[ptr][2];
-            
-            subjectarray[k].studentmarkdatabase[ptr][0]=temparray[0];
-            subjectarray[k].studentmarkdatabase[ptr][1]=temparray[1];
-            subjectarray[k].studentmarkdatabase[ptr][2]=temparray[2];
-        }
-    }
-    }
+        ofstream outfile;
 
+        outfile.open("summdata.txt",ios_base::app);
+        outfile <<subjectarray[k].subjectname<<" "<<subjectarray[k].stucountforsub<<" "<<" A "<<percA<<"% B "<<percB<<"%"<<" C "<<percC<<"%"<<" D "<<percD<<"%"<<" E "<<percE<<"%"<<endl;
+        
+
+
+        // ofstream file;
+        // file.open ("StudentSummaryReport.txt");
+        // file<<subjectarray[k].subjectname<<" "<<subjectarray[k].stucountforsub<<" "<<" A "<<percA<<"% B "<<percB<<"%"<<" C "<<percC<<"%"<<" D "<<percD<<"%"<<" E "<<percE<<"%"<<endl;
+        // file.close();
+        
+        //cout<<subjectarray[k].subjectname<<" "<<subjectarray[k].stucountforsub<<" "<<" A "<<percA<<"% B "<<percB<<"%"<<" C "<<percC<<"%"<<" D "<<percD<<"%"<<" E "<<percE<<"%"<<endl;
+    k++;
+    }
 }
 
 int main(){
